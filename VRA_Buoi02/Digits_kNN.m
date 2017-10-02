@@ -3,7 +3,7 @@ function Digits_kNN()
     imgTrainAll = loadMNISTImages('train-images.idx3-ubyte');
     lblTrainAll = loadMNISTLabels('train-labels.idx1-ubyte');
   
-    imgTrainAll_1 = rot90(imgTrainAll, 3); 
+    imgTrainAll_1 = transpose(imgTrainAll); 
 
     Mdl = fitcknn(imgTrainAll_1, lblTrainAll);
     
@@ -11,7 +11,7 @@ function Digits_kNN()
     imgTestAll = loadMNISTImages('t10k-images.idx3-ubyte');
     lblTestAll = loadMNISTLabels('t10k-labels.idx1-ubyte');
     
-    imgTestAll_1 = rot90(imgTestAll, 3); 
+    imgTestAll_1 = transpose(imgTestAll); 
 
     nTestImgs = size(imgTestAll_1, 1);
     nNumber = randi([1 nTestImgs]);
