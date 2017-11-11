@@ -28,7 +28,7 @@ function Q7_()
         results(labelIndex, resultIndex) = results(labelIndex, resultIndex) + 1;
     end
     
-    csvwrite('Q7*.csv', results);
+    csvwrite('Q7_.csv', results);
     fprintf('\n Ket qua: \n');
     fprintf([repmat('%d\t', 1, size(results, 2)) '\n'], results');
 
