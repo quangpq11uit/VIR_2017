@@ -23,7 +23,7 @@ function varargout = demo(varargin)
 
 % Edit the above text to modify the response to help demo
 
-% Last Modified by GUIDE v2.5 24-Dec-2017 21:49:31
+% Last Modified by GUIDE v2.5 24-Dec-2017 22:07:47
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -62,19 +62,15 @@ mCurrentDescriptor = 'surf';
 set(handles.axes1,'Visible', 'off');
 set(handles.axes2,'Visible', 'off');
 
-set(handles.edit1,'Visible', 'off');
-set(handles.edit2,'Visible', 'off');
-set(handles.edit3,'Visible', 'off');
-set(handles.edit4,'Visible', 'off');
-
 set(handles.pushbutton2,'Visible', 'off');
 set(handles.pushbutton3,'Visible', 'off');
+set(handles.pushbutton4,'Visible', 'off');
+set(handles.pushbutton4,'Enable', 'off');
 
 set(handles.text2,'Visible', 'off');
-set(handles.text3,'Visible', 'off');
-set(handles.text4,'Visible', 'off');
-set(handles.text5,'Visible', 'off');
-set(handles.text6,'Visible', 'off');
+
+set(handles.uibuttongroup1,'Visible', 'off');
+
 % Update handles structure
 guidata(hObject, handles);
 
@@ -105,50 +101,38 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 
     filespec = {'*.jpg;*.png;*.jpeg','All Image Files'};
     [filename, pathname] = uigetfile(filespec, 'Pick an image');
+    
+    set(handles.pushbutton4,'Enable', 'off');
+
     if ~isequal(filename,0)
         set(handles.axes1,'Visible', 'on');
         
-        set(handles.edit1,'Visible', 'on');
-        set(handles.edit2,'Visible', 'on');
-        set(handles.edit3,'Visible', 'on');
-        set(handles.edit4,'Visible', 'on');
-        
         set(handles.pushbutton2,'Visible', 'on');
         set(handles.pushbutton3,'Visible', 'on');
-        
+        set(handles.pushbutton4,'Visible', 'on');
+
         set(handles.text2,'Visible', 'on');
-        set(handles.text3,'Visible', 'on');
-        set(handles.text4,'Visible', 'on');
-        set(handles.text5,'Visible', 'on');
-        set(handles.text6,'Visible', 'on');
+        
+        set(handles.uibuttongroup1,'Visible', 'on');
          
         mQueryImagePath = fullfile(pathname, filename);
         set(handles.text2, 'String', mQueryImagePath);
         
         imageData = imread(mQueryImagePath);
-        set(handles.edit1,'string','0');
-        set(handles.edit2,'string','0');
-        set(handles.edit3,'string', size(imageData, 2));
-        set(handles.edit4,'string', size(imageData, 1));
-        
+
         imshow(imageData, 'Parent', handles.axes1);
         
-    else 
-         set(handles.axes1,'Visible', 'off');
-         
-         set(handles.edit1,'Visible', 'off');
-         set(handles.edit2,'Visible', 'off');
-         set(handles.edit3,'Visible', 'off');
-         set(handles.edit4,'Visible', 'off');
-         
-         set(handles.pushbutton2,'Visible', 'off');
-         set(handles.pushbutton3,'Visible', 'off');
-         
-         set(handles.text2,'Visible', 'off');
-         set(handles.text3,'Visible', 'off');
-         set(handles.text4,'Visible', 'off');
-         set(handles.text5,'Visible', 'off');
-         set(handles.text6,'Visible', 'off');
+    else
+        cla(handles.axes1,'reset');
+        set(handles.axes1,'Visible', 'off');
+        
+        set(handles.pushbutton2,'Visible', 'off');
+        set(handles.pushbutton3,'Visible', 'off');
+        set(handles.pushbutton4,'Visible', 'off');
+        
+        set(handles.text2,'Visible', 'off');
+        
+        set(handles.uibuttongroup1,'Visible', 'off');
     end
     
 
@@ -158,125 +142,18 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-global mQueryImagePath mQueryROI mCurrentDescriptor;
+    global mQueryImagePath mQueryROI mCurrentDescriptor;
 
-set(handles.axes2,'Visible', 'off');
-set(get(handles.axes2,'children'),'visible','off') %hide the current axes contents
-drawnow
+    set(handles.axes2,'Visible', 'off');
+    set(get(handles.axes2,'children'),'visible','off') %hide the current axes contents
+    drawnow
 
-queryImg = imread(mQueryImagePath);
-resultPaths = retrieval(mCurrentDescriptor, queryImg, mQueryROI, 20);
-img = mergeImagesResult(resultPaths);
+    queryImg = imread(mQueryImagePath);
+    resultPaths = retrieval(mCurrentDescriptor, queryImg, mQueryROI, 20);
+    img = mergeImagesResult(resultPaths);
 
-set(handles.axes2,'Visible', 'on');
-imshow(img, 'Parent', handles.axes2);
-
-
-function edit1_Callback(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit1 as text
-%        str2double(get(hObject,'String')) returns contents of edit1 as a double
-str = get(hObject, 'String');
-if isempty(str2double(str))
-    set(hObject,'string','0');
-    warndlg('Input must be numerical');
-end
-
-% --- Executes during object creation, after setting all properties.
-function edit1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit2_Callback(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit2 as text
-%        str2double(get(hObject,'String')) returns contents of edit2 as a double
-str = get(hObject, 'String');
-if isempty(str2double(str))
-    set(hObject,'string','0');
-    warndlg('Input must be numerical');
-end
-
-% --- Executes during object creation, after setting all properties.
-function edit2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit3_Callback(hObject, eventdata, handles)
-% hObject    handle to edit3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit3 as text
-%        str2double(get(hObject,'String')) returns contents of edit3 as a double
-str = get(hObject, 'String');
-if isempty(str2double(str))
-    set(hObject,'string','0');
-    warndlg('Input must be numerical');
-end
-
-% --- Executes during object creation, after setting all properties.
-function edit3_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit4_Callback(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit4 as text
-%        str2double(get(hObject,'String')) returns contents of edit4 as a double
-str = get(hObject, 'String');
-if isempty(str2double(str))
-    set(hObject,'string','0');
-    warndlg('Input must be numerical');
-end
-
-% --- Executes during object creation, after setting all properties.
-function edit4_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+    set(handles.axes2,'Visible', 'on');
+    imshow(img, 'Parent', handles.axes2);
 
 
 % --- Executes on button press in pushbutton3.
@@ -286,39 +163,27 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
     global mQueryImagePath mQueryROI;
 
-    imageData = imread(mQueryImagePath);
-    str = get(handles.edit1, 'String');
-    x = str2double(str);
-    
-    str = get(handles.edit2, 'String');
-    y = str2double(str);
-    
-    str = get(handles.edit3, 'String');
-    w = str2double(str);
-    
-    str = get(handles.edit4, 'String');
-    h = str2double(str);
-    
- 	ogrinalWidth = size(imageData, 2);
-    ogrinalHeight = size(imageData, 1);
-    
-    if x + w > ogrinalWidth
-        w = ogrinalWidth - x;
-    end
-    
-    if y + h > ogrinalHeight
-        h = ogrinalHeight - y;
-    end
-    
-    set(handles.edit3,'string', w);
-    set(handles.edit4,'string', h);
-        
-    mQueryROI = [x y w h];
-    
+    imageData = imread(mQueryImagePath);   
+
+    set(handles.pushbutton4,'Enable', 'on');
+
+    mQueryROI = getrect(handles.axes1);
     imshow(imageData,'Parent',handles.axes1);
     axes(handles.axes1);
-    rectangle('Position', [x y w h], 'EdgeColor', 'y', 'LineWidth', 1);
+    rectangle('Position', mQueryROI, 'EdgeColor', 'y', 'LineWidth', 1);
 
+% --- Executes on button press in pushbutton4.
+function pushbutton4_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+    global mQueryImagePath mQueryROI;
+    set(handles.pushbutton4,'Enable', 'off');
+    mQueryROI = [];
+
+    imageData = imread(mQueryImagePath);   
+    imshow(imageData,'Parent',handles.axes1);
 
 % --- Executes when selected object is changed in uibuttongroup1.
 function uibuttongroup1_SelectionChangedFcn(hObject, eventdata, handles)
