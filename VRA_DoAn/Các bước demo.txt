@@ -1,0 +1,4 @@
+Tìm một ảnh với descriptor SURF
+Tìm một ảnh với descriptor SURF-HOG
+Tìm một vùng ảnh với descriptor SURF
+Tìm một vùng ảnh với descriptor SURF-HOG
