@@ -9,7 +9,7 @@ function [percent, imgExist] = evaluation(descriptor, queryDir, query, datasetDi
     cells = textscan(fid,'%s %f %f %f %f');
     fclose(fid);
     
-    imageName = strrep(cells{1}{1}, 'oxc1_','');
+    imageName = cells{1}{1};
     imagePath = fullfile(datasetDir, strcat(imageName, '.jpg'));
     
     if ~exist(imagePath, 'file')
@@ -31,8 +31,16 @@ function [percent, imgExist] = evaluation(descriptor, queryDir, query, datasetDi
     fclose(fid);
     
     results = cells{1};
+    realResults = {};
     
-    resultPaths = retrieval(descriptor, query, [x y w h], length(results));
+    for k=1:length(results)
+        path = [datasetDir results{k} '.jpg'];
+        if exist(path, 'file')
+           realResults{end + 1} = results{k};
+        end
+    end
+    
+    resultPaths = retrieval(descriptor, query, [x y w h], length(realResults));
     
     for k=1:length(resultPaths)
         path = resultPaths{k};
@@ -41,7 +49,7 @@ function [percent, imgExist] = evaluation(descriptor, queryDir, query, datasetDi
         resultPaths{k} = path;
     end
     
-    correctCount = intersect(results, resultPaths);
+    correctCount = intersect(realResults, resultPaths);
     
     percent = length(correctCount)/length(resultPaths);
 end
