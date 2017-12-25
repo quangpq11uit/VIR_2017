@@ -1,5 +1,6 @@
-function evaluationAll(descriptor, queryDir, datasetDir)
-    dinfo = dir('/Users/quangphan/Documents/data_vir/gt_files_170407/');
+function evaluationAll(descriptor, datasetDir)
+    queryDir = 'paris_120310/';
+    dinfo = dir(queryDir);
     count = 0;
     sumPercent = 0;
     for k = 1 : length(dinfo)

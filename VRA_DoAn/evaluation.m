@@ -2,7 +2,7 @@ function [percent, imgExist] = evaluation(descriptor, queryDir, query, datasetDi
     
     imgExist = 1;
     queryFile = strcat(query, '_query.txt');
-    resultFile = strcat(query, '_good.txt');
+    resultFile = strcat(query, '_ok.txt');
     path = fullfile(queryDir, queryFile);
     
     fid = fopen(path);

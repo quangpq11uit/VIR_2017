@@ -1,14 +1,12 @@
 function imagePaths = retrieval(descriptor, queryImg, queryROI, numResults)
     
+    % Duong dan toi thu muc chua bo dataset Oxford Building
+    dir = '/Users/quangphan/Documents/data_vra/paris_1k/';
     % Tai thu muc dataset va image indexs phu hop
     if isequal(descriptor, 'surf')
-        % Duong dan toi thu muc chua bo dataset Oxford Building
-        dir = '/Users/quangphan/Documents/data_vir/oxbuild_images/';
-        load('../features/index_surf.mat');
+        load('../../VRA_Features/index_surf.mat');
     elseif isequal(descriptor, 'hog-surf')
-        % Duong dan toi thu muc chua bo dataset 1200 anh
-        dir = '/Users/quangphan/Documents/data_vir/oxbuild_images_1k/';
-        load('../features/index_hog.mat');
+        load('../../VRA_Features/index_hog.mat');
     end
     
     % neu toa do anh bang 0 thi ham retrieval se bi loi, 
